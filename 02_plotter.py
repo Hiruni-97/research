@@ -14,9 +14,7 @@ for node in data['nodes']:
 for edge in data['edges']:
     G.add_edge(edge['source'], edge['target'])
 
-# Assign attributes
-G.nodes[1]['color'] = 'red'
-G[1][2]['weight'] = 5
+
 
 # Visualize the graph
 nx.draw(G, with_labels=True, node_color='lightblue', edge_color='gray')
