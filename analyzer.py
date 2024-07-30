@@ -19,4 +19,3 @@ class Analyzer:
             if degree > 5:
                 color = 'red'
             self.colors.append(color)
-

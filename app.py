@@ -1,18 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 import json
 import networkx as nx
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
 from analyzer import Analyzer
+from graph_generator import Generator
 
 app = Flask(__name__)
 
 
-def generate_graph():
+def generate_random_graph(nodes_count, edges_count):
     G = nx.Graph()
-    with open('input.json', 'r') as f:
-        data = json.load(f)
+    generator = Generator(nodes_count, edges_count)
+    data = generator.get_graph()
 
     for node in data['nodes']:
         G.add_node(node['id'], label=node['label'])
@@ -26,15 +27,28 @@ def generate_graph():
     nx.draw(G,pos, with_labels=True, node_color=colors, edge_color='gray')
     buf = BytesIO()
     plt.savefig(buf, format='png')
+    plt.close()
     buf.seek(0)
     return base64.b64encode(buf.read()).decode('utf-8')
 
 
 @app.route('/')
 def index():
+    '''
+    Landing page
+    '''
+    return render_template('index.html')
 
-    graph_image = generate_graph()
-    return render_template('index.html', graph_image=graph_image)
+@app.route('/graph',  methods=['POST'])
+def graph():
+    '''
+    Generate Graph
+    '''
+    nodes_count = request.form['nodes']
+    edges_count = request.form['edges']
+
+    graph_image = generate_random_graph(nodes_count, edges_count)
+    return render_template('graph.html', graph_image=graph_image)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

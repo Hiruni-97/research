@@ -6,7 +6,13 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <h1>Critical Nodes Graph</h1>
-    <img src="data:image/png;base64,{{ graph_image }}" alt="Critical Nodes Graph">
+    <h1>Generate Graph</h1>
+    <form action="/graph" method="post">
+        <label for="nodes">Number of Nodes:</label>
+        <input type="number" id="nodes" name="nodes" required><br><br>
+        <label for="edges">Number of Edges:</label>
+        <input type="number" id="edges" name="edges" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>
